@@ -1,4 +1,4 @@
-a,b,c,d,e,f,g,h,i,j,k
+urban area core city,land area km2,avg circuity,avg clustering coefficient,dead-end ratio,3-way ratio,4-way ratio,intersect density/km2,street density km/km2,avg street length (m),avg streets/node
 New York,8937,1.06,0.04,0.18,0.62,0.2,34.44,8.84,148,2.86
 Atlanta,6850,1.1,0.04,0.32,0.58,0.09,18.39,6.16,186,2.45
 Chicago,6325,1.07,0.04,0.17,0.57,0.25,27.05,7.77,163,2.92
