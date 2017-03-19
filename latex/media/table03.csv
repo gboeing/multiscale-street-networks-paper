@@ -1,0 +1,28 @@
+measure,mean,std dev,min,median,max
+Area (km2),16.703,107.499,0.039,3.918,7434.258
+Avg of the avg neighborhood degree,2.94,0.297,0.4,2.953,3.735
+Avg of the avg weighted neighborhood degree,0.033,0.141,<0.001,0.029,9.357
+Avg circuity,1.067,0.159,1,1.055,20.452
+Avg clustering coefficient,0.048,0.041,<0.001,0.04,1
+Avg weighted clustering coefficient,0.01,0.018,<0.001,0.005,0.524
+Intersection count,324,1266,0,83,62996
+Avg degree centrality,0.093,0.136,<0.001,0.052,2.667
+Edge density (km/km2),12.654,6.705,0.006,11.814,58.603
+Avg edge length (m),161.184,80.769,25.822,144.447,3036.957
+Total edge length (km),159.067,578.521,0.052,40.986,24728.326
+Proportion of dead-ends,0.192,0.093,<0.001,0.184,1
+Proportion of 3-way intersections,0.572,0.11,<0.001,0.579,1
+Proportion of 4-way intersections,0.237,0.129,<0.001,0.217,1
+Intersection density (per km2),29.363,21.607,<0.001,24.719,259.647
+Average node degree,5.251,0.668,0.8,5.268,7.166
+m,1046,3924,2,275,176161
+n,401,1516,2,103,71993
+Node density (per km2),35.449,24.409,0.047,30.718,296.74
+Max PageRank value,0.034,0.046,<0.001,0.021,0.87
+Min PageRank value,0.005,0.018,<0.001,0.002,0.5
+Self-loop proportion,0.005,0.015,<0.001,<0.001,1
+Street density (km/km2),6.528,3.435,0.003,6.109,29.302
+Average street segment length (m),162.408,81.035,25.822,145.479,3036.957
+Total street length (km),86.096,331.048,0.026,21.005,15348.008
+Street segment count,558,2208,1,140,107393
+Average streets per node,2.851,0.282,1,2.852,4
