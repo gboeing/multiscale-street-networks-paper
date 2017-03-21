@@ -1,34 +1,22 @@
-\documentclass[Afour,sageh,times]{sage/sagej}
+\documentclass{article}
 
-\usepackage{moreverb,url}
+\usepackage{graphicx}
 \usepackage{csvsimple}
-\usepackage[colorlinks,bookmarksopen,bookmarksnumbered,citecolor=red,urlcolor=red]{hyperref}
+\usepackage[numbers]{natbib}
+\usepackage[affil-it]{authblk}
 
-\bibliographystyle{plainnat}
-\setcitestyle{numbers}
+\bibliographystyle{apalike}
 
-\newcommand\BibTeX{{\rmfamily B\kern-.05em \textsc{i\kern-.025em b}\kern-.08em
-T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-
-\def\volumeyear{2017}
 \begin{document}
-\runninghead{Boeing}
-\title{A Multi-Scale Analysis of 27,000 Urban Street Networks}
-\author{Geoff Boeing\affilnum{1}}
-\affiliation{\affilnum{1}PhD Candidate, Department of City and Regional Planning, University of California, Berkeley}
-\corrauth{Geoff Boeing,
-Department of City and Regional Planning,
-University of California, Berkeley,
-United States}
-\email{gboeing@berkeley.edu}
+\title{A Multi-Scale Analysis of 27,000 Urban Street Networks\footnote{This is a journal article manuscript currently under peer review.}}
+\author{Geoff Boeing\footnote{Email address: gboeing@berkeley.edu; corresponding author.}}
+\affil{Department of City and Regional Planning\\University of California, Berkeley}
+\date{\today}
+\maketitle
 
 \begin{abstract}
-This paper serves illustrative purposes as it presents wide-ranging preliminary empirical findings on US urban form and street network characteristics, using OSMnx. It also demonstrates the scalability and flexibility of OSMnx as a new research tool. This paper addresses past limitations by conducting an analysis of street networks with large sample sizes, with clearly defined network definitions and extents for reproducibility, and using non-planar, directed graphs. In particular, it examines urban street networks focusing on structure, connectedness, centrality, and robustness. In total it cross-sectionally analyzes 497 urbanized areas' street networks, 19,655 cities' and towns' street networks, and 6,857 neighborhoods' street networks. These sample sizes are larger than those in any previous study and the preliminary empirical findings illustrate the use of OSMnx as a new research platform.
+OpenStreetMap presents an emerging source of worldwide geospatial urban data useful to researchers. This paper uses the OSMnx software to automatically download and analyze 27,000 street networks from OpenStreetMap at metropolitan, municipal, and neighborhood scales---that is, every urbanized area, incorporated place, and Zillow neighborhood in the US. In turn it presents wide-ranging empirical findings on US urban form and street network characteristics. This paper addresses past limitations by conducting an analysis of street networks with an extremely large sample sizes, with clearly defined network definitions and extents for reproducibility, and using non-planar, directed graphs. Its analysis emphasizes urban street networks measures relevant to urban design and morphology, including structure, connectedness, centrality, and robustness. In total we cross-sectionally analyze the street networks of 497 urbanized areas, 19,655 cities and towns, and 6,857 neighborhoods. These sample sizes are larger than those in any previous study and illustrate the use of OSMnx and OpenStreetMap as a new urban form research platform.
 \end{abstract}
-
-\keywords{network analysis, street network, urban design, urban form, urban planning}
-
-\maketitle
 
 \section{Introduction}
 On May 20, 1862, Abraham Lincoln signed the Homestead Act into law, making land across the United States Midwest and Great Plains available for free to all applicants \cite{porterfield_homestead_2005}. Under its auspices over the next 70 years, the federal government distributed 270 million acres of public land (10\% of the entire US landmass) to private owners in the form of 1.6 million homesteads \cite{lee_kansas_1979, sherraden_inclusion_2005}. Towns with gridiron street networks sprang up rapidly across the Great Plains and Midwest, due to both the prevailing urban design paradigm of the day and the standardized rectilinear town plats used repeatedly to lay out instant new cities \cite{southworth_streets_1997}. Through path dependence, the spatial signatures of these land use laws, design paradigms, and planning instruments can still be seen today in these cities' urban forms and street networks.
@@ -56,7 +44,7 @@ In total, this study cross-sectionally analyzes 27,009 networks: 497 urbanized a
 
 \section{Analysis of Metropolitan-Scale Street Networks}
 
-\begin{table*}[h]
+\begin{table*}[hp]
 \caption{Central tendency and statistical dispersion for selected measures of all US urbanized areas' street networks.}
 \label{table01}
 \csvautotabular{media/table01.csv}
@@ -72,11 +60,11 @@ Table \ref{table01} shows the considerable variation in street network character
 
 Nevertheless, looking across the data set provides a sense of the breadth of American metropolitan street networks. New York's urbanized area---America's largest-–-has 373,309 intersections and 79 million meters of linear street (or 417,570 and 83.4 million if including service roads). Delano, CA's urbanized area---America's smallest---has 874 intersections and 222,328 meters of linear street (or 964 and 231,000 meters if including service roads). The typical (Table \ref{table01}, \emph{median}) American urbanized area is approximately 185 km\textsuperscript{2} in land area, has 5,830 intersections, and 1.3 million linear meters of street. Its street network is about 7.4\% more circuitous than straight-line, as-the-crow-flies edges between nodes would be. The most circuitous network is 14\% more circuitous than straight-line would be, and least is only 2\%. Looking at network complexity in terms of density and connectivity, in the typical urbanized area, the average street segment length (a proxy for block size) is 160 meters. The longest average street segment is the 226-meter average of urbanized Danbury, CT. Puerto Rican cities hold the top four positions for shortest average street segment length, but among the 50 states plus DC, the shortest average street segment is the 125.3-meter average of urbanized Tracy, CA, indicating a much finer street network. The urbanized area of Portland, Oregon, with its famously compact walkable blocks, ranks second at 125.5 meters on average.
 
-\begin{figure}[h]
-\includegraphics[width=0.45\textwidth]{media/fig02.png}
-\caption{Distribution of node types in 9 urbanized areas, with number of streets emanating from the node on the \emph{x}-axis and proportion of nodes of this type on the \emph{y}-axis }
+\begin{figure*}[hp]
+\includegraphics[width=1\textwidth]{media/fig02.png}
+\caption{Distribution of node types in 9 urbanized areas, with number of streets emanating from the node on the $x$-axis and proportion of nodes of this type on the $y$-axis }
 \label{fig02}
-\end{figure}
+\end{figure*}
 
 The typical urbanized area has 26 intersections per km\textsuperscript{2}. Both the densest and the sparsest are in the deep south: the sparsest is 12.5 (Gainesville, GA urbanized area) and the densest is 49.4 (New Orleans urbanized area). However, New Orleans is an anomaly in the deep south. Figure \ref{fig01} depicts the intersection density in each American urbanized area, from lowest density in dark red to highest density in light yellow. The map makes clear how the highest intersection densities are concentrated to the west of the Mississippi River. The lowest intersection densities are concentrated in a belt running from Louisiana, up through the Carolinas and Appalachians, and into New England. In general, only the largest cities on the east coast (e.g., Boston, New York, Philadelphia, Washington) and Florida escape this trend.
 
@@ -86,7 +74,7 @@ In the typical urbanized area, 18\% of nodes are 4-way intersections, 59\% are 3
 
 The relationship between fine-grained networks and connectedness/grid-ness is, however, not clear-cut. Intersection density has only a weak, positive linear relationship with the proportion of 4-way intersections in the urbanized area ($r^{2}=0.17$). But the relationship between network circuity and grid-ness is somewhat clearer. Average circuity has a negative linear relationship with the proportion of 4-way intersections in the urbanized area ($r^{2}=0.43$).
 
-\begin{table*}[h]
+\begin{table*}[hp]
 \caption{Selected measures of the 30 largest (by land area) urbanized areas' street networks.}
 \label{table02}
 \csvautotabular{media/table02.csv}
@@ -102,17 +90,17 @@ These metropolitan-scale analyses consider trends in the built form at the scale
 
 Table \ref{table03} shows similarly great variation in street network characteristics across the entire data set of 19,655 cities and towns. Again, this data set comprises the street networks of every incorporated city and town in the United States. Following recent work by \citet{barthelemy_modeling_2008} and \citet{strano_urban_2013}, we examine the relationship between the total street length $L$ and the number of nodes $n$. The former proposed a model of cities in which $L$ and $n$ scale nonlinearly as $n^{1/2}$, and the latter recently confirmed this empirically with a small sample of ten European cities' street networks. However, their small sample size may limit the generalizability and interpretability of their finding. To investigate this empirically, we examine the relationship between the total street length $L$ and the number of nodes $n$ for 19,655 US cities and towns and find a strong \emph{linear} relationship ($r^{2}=0.98$), as depicted in Figure \ref{fig03}, contradicting Strano et al. We also find a similar linear relationship at the metropolitan and neighborhood scales.
 
-\begin{table*}[h]
+\begin{table*}[hp]
 \caption{Selected summary stats for every incorporated city and town in the US.}
 \label{table03}
 \csvautotabular{media/table03.csv}
 \end{table*}
 
-\begin{figure}[h]
-	\includegraphics[width=0.45\textwidth]{media/fig03-v.png}
+\begin{figure*}[h]
+	\includegraphics[width=1\textwidth]{media/fig03.png}
 	\caption{The linear relationship between total street length and number of nodes in the street networks of 6,857 US neighborhoods (top) and 19,655 US cities and towns (bottom).}
 	\label{fig03}
-\end{figure}
+\end{figure*}
 
 \begin{figure*}[h]
 	\includegraphics[width=1\textwidth]{media/fig04.png}
@@ -124,7 +112,7 @@ Moreover, previous findings \citep[e.g.,][]{masucci_random_2009} suggest the dis
 
 This study finds that such cities are not uncommon, particularly between the Mississippi River and the Rocky Mountains: the Great Plains states are characterized by a unique street network form that is both orthogonal and reasonably dense. The former is partly the result of topography (flat, plains terrain that allows idealized grids) and design history (platting and development during the late nineteenth century) that favor orthogonal grids, as discussed earlier. The latter results from the fact that most towns across the Great Plains exhibit minimal suburban sprawl. Thus, the municipal boundaries snugly embrace the grid-like street network, without extending to accommodate the vast peripheral belt of twentieth century sprawl, circuity, and ``loops and lollipops" \cite{southworth_streets_1997} that characterizes cities in California that were settled in the same era but later subjected to substantial suburbanization.
 
-\begin{table*}[h]
+\begin{table*}[hp]
 \caption{Median values, aggregated by state plus DC, of selected measures of the municipal-scale street networks for every city and town in the US.}
 \label{table04}
 \csvautotabular{media/table04.csv}
@@ -138,7 +126,7 @@ Municipal boundaries vary greatly in their extents around the built-up area. For
 
 Thus far, we have examined every urban street network in the United States at the metropolitan and municipal scales. This analysis has focused on the complexity on the network in terms of density, resilience, and connectedness. While the metropolitan scale captures the emergent character of the wider region's complex system, and the municipal scale captures planning decisions made by a single city government, the neighborhood scale best represents the scale of individual urban design interventions into the urban form. Further, this scale more commonly reflects individual designs, eras, and paradigms in street network development than the ``many hands, many eras" evolution of form at larger scales.
 
-\begin{table*}[h]
+\begin{table*}[hp]
 \caption{Selected summary stats for all the neighborhood-scale street networks.}
 \label{table05}
 \csvautotabular{media/table05.csv}
@@ -152,7 +140,7 @@ Due to the extreme values seen---resulting from the large variance in neighborho
 
 \begin{figure*}[h]
 	\includegraphics[width=1\textwidth]{media/fig05.png}
-	\caption{Square-mile comparisons of central cities and their suburbs. Left: top, downtown Philadelphia; bottom, its suburb, King of Prussia. Middle: top, downtown Portland; bottom, its suburb, Beaverton. Right: top, downtown San Francisco; bottom, its suburb Concord.}
+	\caption{Square-mile comparisons of central cities and their suburbs. Left: top, downtown Philadelphia; bottom, its suburb, King of Prussia. Middle: top, downtown Portland; bottom, its suburb, Beaverton. Right: top, downtown San Francisco; bottom, its suburb, Concord.}
 	\label{fig05}
 \end{figure*}
 
@@ -173,10 +161,6 @@ These findings are interesting for the practice and history of planning. The spa
 This finding suggests future research should incorporate a temporal analysis that this present study does not do with its cross-sectional data. This empirical analysis emphasized network structure. Expanding the study of complex urban form by examining the other types of complexity---and further linking structural complexity to the temporal complexity of dynamics and processes---lies ahead as critical future work. 
 
 In total, this paper analyzed 497 urbanized areas' street networks, 19,655 cities' and towns' street networks, and 6,857 neighborhoods' street networks. These sample sizes were larger than those in any previous study. It looked at both metric and topological measures of the structure and complexity of these networks---particularly focusing on density, connectedness, and resilience. These preliminary empirical findings demonstrate the use of OSMnx as a new piece of research infrastructure. They suggest to urban planners new methods for acquiring and analyzing street network data, including new methods for evaluating network resilience and resilience gains with betweenness centralities and average node connectivities. Finally, this study has made all of these network datasets---for 497 urbanized areas, 19,655 cities and towns, and 6,857 neighborhoods---along with all of their attribute data and complexity measures available in an online public repository for other researchers to study and repurpose.
-
-\begin{acks}
-Redacted
-\end{acks}
 
 \bibliography{references}
 
