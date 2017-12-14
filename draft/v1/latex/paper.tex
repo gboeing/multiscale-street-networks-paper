@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[Afour,sageh,times]{sagej}
 
 \usepackage{graphicx}
 \usepackage{geometry}
@@ -7,24 +7,30 @@
 \usepackage{setspace}
 \usepackage[USenglish]{babel}
 \usepackage{csquotes}
-\usepackage[numbers]{natbib}
-\usepackage[affil-it]{authblk}
+\usepackage{natbib}
+\usepackage{url}
 
+
+\usepackage{moreverb,url}
+\usepackage[colorlinks,bookmarksopen,bookmarksnumbered,citecolor=red,urlcolor=red]{hyperref}
+\newcommand\BibTeX{{\rmfamily B\kern-.05em \textsc{i\kern-.025em b}\kern-.08em
+		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\def\volumeyear{2017}
+
+\renewcommand{\cite}{\citep}
 \doublespacing
-\bibliographystyle{chicago}
 
 \begin{document}
-\title{A Multi-Scale Analysis of 27,000 Urban Street Networks\footnote{This is a journal article manuscript currently under peer review.}}
-\author{Geoff Boeing\footnote{Email address: gboeing@berkeley.edu; corresponding author.}}
-\affil{Department of City and Regional Planning\\University of California, Berkeley}
-\date{\today}
+\title{A Multi-Scale Analysis of 27,000 Urban Street Networks}
+\author{Author Redacted}
+\date{March 2017}
 \maketitle
 
 
 
 \begin{abstract}
 	
-OpenStreetMap offers an underexplored source of worldwide geospatial data useful to urban researchers. This study uses the OSMnx software to automatically download and analyze over 27,000 street networks from OpenStreetMap at metropolitan, municipal, and neighborhood scales---namely, every US city and town ($N=19655$), census urbanized area ($N=497$), and Zillow-defined neighborhood ($N=6857$). It presents wide-ranging empirical findings on US urban form and street network characteristics, emphasizing measures relevant to urban design and morphology such as structure, connectedness, density, centrality, and resilience. In the past, street network data acquisition has been challenging and ad hoc, but this study illustrates the use of OSMnx and OpenStreetMap to conduct street network analysis with extremely large sample sizes, with clearly defined network definitions and extents for reproducibility, and using nonplanar, directed graphs. These street networks and their measures are now shared in a public repository for other researchers to use.
+OpenStreetMap offers an underexplored source of worldwide geospatial data useful to urban researchers. This study uses the OSMnx software to automatically download and analyze 27,009 US street networks from OpenStreetMap at metropolitan, municipal, and neighborhood scales---namely, every US city and town ($N=19655$), census urbanized area ($N=497$), and Zillow-defined neighborhood ($N=6857$). It presents wide-ranging empirical findings on US urban form and street network characteristics, emphasizing measures relevant to graph theory, urban design, and morphology such as structure, connectedness, density, centrality, and resilience. In the past, street network data acquisition and processing has been challenging and ad hoc. This study illustrates the use of OSMnx and OpenStreetMap to consistently conduct street network analysis with extremely large sample sizes, with clearly defined network definitions and extents for reproducibility, and using nonplanar, directed graphs. These street networks and measures data sets have been shared in a public repository for other researchers to use.
 
 \end{abstract}
 
@@ -32,35 +38,35 @@ OpenStreetMap offers an underexplored source of worldwide geospatial data useful
 
 \section{Introduction}
 
-On May 20, 1862, Abraham Lincoln signed the Homestead Act into law, making land across the United States' Midwest and Great Plains available for free to applicants \cite{porterfield_homestead_2005}. Under its auspices over the next 70 years, the federal government distributed 10\% of the entire US landmass to private owners in the form of 1.6 million homesteads \cite{lee_kansas_1979, sherraden_inclusion_2005}. New towns with gridiron street networks sprang up rapidly across the Great Plains and Midwest, due to both the prevailing urban design paradigm of the day and the standardized rectilinear town plats used repeatedly to lay out instant new cities \cite{southworth_streets_1997}. Through path dependence, the spatial signatures of these land use laws, design paradigms, and planning instruments can still be seen today in these cities' urban forms and street networks.
+On May 20, 1862, Abraham Lincoln signed the Homestead Act into law, making land across the United States' Midwest and Great Plains available for free to applicants \cite{porterfield_homestead_2005}. Under its auspices over the next 70 years, the federal government distributed 10\% of the entire US landmass to private owners in the form of 1.6 million homesteads \cite{lee_kansas_1979, sherraden_inclusion_2005}. New towns with gridiron street networks sprang up rapidly across the Great Plains and Midwest, due to both the prevailing urban design paradigm of the day and the standardized rectilinear town plats used repeatedly to lay out instant new cities \cite{southworth_streets_1997}. Through path dependence, the spatial signatures of these land use laws, design paradigms, and planning instruments can still be seen today in these cities' urban forms and street networks. Cross-sectional analysis of American urban form can reveal these artifacts and histories through street networks at metropolitan, municipal, and neighborhood scales.
 
-A cross-sectional analysis of American urban form can reveal these artifacts and histories through street networks at metropolitan, municipal, and neighborhood scales. Network analysis is a natural approach to the study of cities as complex systems \cite{masucci_random_2009}. The empirical literature on street networks is growing ever richer, but suffers from some limitations---discussed in detail in \cite{boeing_osmnx:_2017} and summarized here. First, sample sizes tend to be fairly small due to data availability, gathering, and processing constraints: most studies in this literature that conduct topological or metric analysis tend to have sample sizes ranging around 10 to 50 networks \cite{buhl_topological_2006, cardillo_structural_2006, barthelemy_modeling_2008, strano_urban_2013}, which may limit the generalizability and interpretability of findings. Second, reproducibility has been difficult when the dozens of decisions that go into analysis---such as spatial extents, topological simplification and correction, definitions of nodes and edges, etc.---are ad hoc or only partly reported \citep[e.g.,][]{porta_network_2006, strano_urban_2013}. Third, and related to the first two, studies frequently oversimplify to planar or undirected primal graphs for tractability \cite[e.g.,][]{buhl_topological_2006, cardillo_structural_2006, barthelemy_modeling_2008, masucci_random_2009}, or use dual graphs despite the loss of geographic and metric information \cite{batty_network_2005, jiang_integration_2002, ratti_space_2004, crucitti_centrality_2006, crucitti_centrality_2006-1}. 
+Network analysis is a natural approach to the study of cities as complex systems \cite{masucci_random_2009}. The empirical literature on street networks is growing ever richer, but suffers from some limitations---discussed in detail in \cite{redacted_osmnx:_2017} and summarized here. First, sample sizes tend to be fairly small due to data availability, gathering, and processing constraints: most studies in this literature that conduct topological or metric analyses tend to have sample sizes ranging around 10 to 50 networks \cite{buhl_topological_2006, cardillo_structural_2006, barthelemy_modeling_2008, strano_urban_2013}, which may limit the generalizability and interpretability of findings. Second, reproducibility has been difficult when the dozens of decisions that go into analysis---such as spatial extents, topological simplification and correction, definitions of nodes and edges, etc.---are ad hoc or only partly reported \citep[e.g.,][]{porta_network_2006, strano_urban_2013}. Third, and related to the first two, studies frequently oversimplify to planar or undirected primal graphs for tractability \cite[e.g.,][]{buhl_topological_2006, cardillo_structural_2006, barthelemy_modeling_2008, masucci_random_2009}, or use dual graphs despite the loss of geographic, metric information \cite{batty_network_2005, jiang_integration_2002, ratti_space_2004, crucitti_centrality_2006, crucitti_centrality_2006-1}. 
 
-This study addresses these limitations by conducting an urban morphological analysis of street networks at multiple scales, with large sample sizes, with clearly defined network definitions and extents for reproducibility, and using nonplanar, directed graphs. In particular, it examines urban street networks---represented as primal, nonplanar, weighted multidigraphs with possible self-loops---focusing on structure, connectedness, centrality, and resilience. This study analyzes 27,009 urban street networks at multiple overlapping scales across the US. Namely, it examines the street networks of every incorporated city and town (population size $N=19655$), census urbanized area ($N=497$), and Zillow-defined neighborhood ($N=6857$) in the US. To do so, it uses OSMnx---a new street network research toolkit \cite{boeing_osmnx:_2017}---to download, construct, and analyze these street networks at metropolitan, municipal, and neighborhood scales. These street networks and their measures data have been shared in a public repository for other researchers to use at [link redacted].
+This study addresses these limitations by conducting a morphological analysis of urban street networks at multiple scales, with large sample sizes, with clearly defined network definitions and extents for reproducibility, and using nonplanar, directed graphs. In particular, it examines 27,009 urban street networks---represented as primal, nonplanar, weighted multidigraphs with possible self-loops---at multiple overlapping scales across the US, focusing on structure, connectedness, centrality, and resilience. It examines the street networks of every incorporated city and town (population size $N=19655$), census urbanized area ($N=497$), and Zillow-defined neighborhood ($N=6857$) in the US. To do so, it uses OSMnx---a new street network research toolkit \cite{redacted_osmnx:_2017}---to download, construct, and analyze these street networks at metropolitan, municipal, and neighborhood scales. These street networks and measures data sets have been compiled and shared in a public repository for other researchers to repurpose at [redacted].
 
-The purpose of this paper is threefold. First, it describes and demonstrates a new methodology for easily and consistently acquiring, constructing, and analyzing large samples of street networks as nonplanar directed graphs. Second, it presents empirical findings of descriptive urban morphology for the street networks of every US city, urbanized area, and Zillow neighborhood. Third, it investigates with large sample sizes some claims previously made in the research literature with small sample sizes. This paper is organized as follows. In the next section, it discusses the data sources, tools, and methods used to collect, construct, and analyze these street networks. Next, it presents findings of the analyses at metropolitan, municipal, and neighborhood scales. Finally, it concludes with a discussion of these findings and their implications for street network analysis, urban morphology, and city planning.
+The purpose of this paper is threefold. First, it describes and demonstrates a new methodology for easily and consistently acquiring, constructing, and analyzing large samples of street networks as nonplanar directed graphs. Second, it presents empirical findings of descriptive urban morphology for the street networks of every US city, urbanized area, and Zillow neighborhood. Third, it investigates with large sample sizes some claims previously made in the research literature using small sample sizes. This paper is organized as follows. In the next section, it discusses the data sources, tools, and methods used to collect, construct, and analyze these street networks. Then it presents findings of the analyses at metropolitan, municipal, and neighborhood scales. Finally, it concludes with a discussion of these findings and their implications for street network analysis, urban morphology, and city planning.
 
 
 
 \section{Methodology}
 
-A network (also called a \emph{graph} in mathematics) comprises a set of nodes connected to one another by a set of edges. Street networks can be conceptualized as primal, directed, nonplanar graphs. A primal street network represents intersections as nodes and street segments as edges. A directed network has directed edges: that is, edge $uv$ points one-way from node $u$ to node $v$, but there need not exist a reciprocal edge $vu$. A planar network can be represented in two dimensions with its edges intersecting only at nodes \cite[e.g.,][]{viana_simplicity_2013, fischer_spatial_2014}. Most street networks are nonplanar---due to grade-separated expressways, overpasses, bridges, tunnels, etc.---but most quantitative studies of urban street networks represent them as planar \cite[e.g.,][]{buhl_topological_2006, cardillo_structural_2006, barthelemy_modeling_2008, masucci_random_2009, strano_urban_2013} for tractability because bridges and tunnels are uncommon in some cities. Planar graphs may reasonably model the street networks of old European town centers, but poorly model the street networks of modern autocentric cities like Los Angeles or Tokyo with many grade-separated expressways, bridges, and underpasses.
+A network (also called a \emph{graph} in mathematics) comprises a set of nodes connected to one another by a set of edges. Street networks can be conceptualized as primal, directed, nonplanar graphs. A \emph{primal} street network represents intersections as nodes and street segments as edges. A \emph{directed} network has directed edges: that is, edge $uv$ points one-way from node $u$ to node $v$, but there need not exist a reciprocal edge $vu$. A \emph{planar} network can be represented in two dimensions with its edges intersecting only at nodes \cite{viana_simplicity_2013, fischer_spatial_2014}. Most street networks are nonplanar---due to grade-separated expressways, overpasses, bridges, tunnels, etc.---but most quantitative studies of urban street networks represent them as planar \cite[e.g.,][]{buhl_topological_2006, cardillo_structural_2006, barthelemy_modeling_2008, masucci_random_2009, strano_urban_2013} for tractability because bridges and tunnels are uncommon in some cities. Planar graphs may reasonably model the street networks of old European town centers, but poorly model the street networks of modern autocentric cities like Los Angeles or Tokyo with many grade-separated expressways, bridges, and underpasses.
 
 \subsection{Study Sites and Data Acquisition}
 
-This study uses OSMnx to download, construct, correct, analyze, and visualize street networks at metropolitan, municipal, and neighborhood scales. OSMnx is a Python-based research tool that easily downloads OpenStreetMap data for any place in the world and constructs it into a spatially-embedded graph-theoretic object for analysis and visualization \cite{boeing_osmnx:_2017}. OpenStreetMap is a collaborative worldwide mapping project that makes its spatial data available via various APIs \cite{corcoran_analysing_2013, jokar_arsanjani_openstreetmap_2015}. These data are of high quality and compare favorably to CIA World Factbook estimates and US Census TIGER/Line data \cite{haklay_how_2010, over_generating_2010, zielstra_comparative_2011, maron_how_2015, wu_improving_2005, frizzelle_importance_2009}. In 2007, OpenStreetMap imported the TIGER/Line roads (2005 vintage) and since then, many community-led corrections and improvements have been made \cite{willis_openstreetmap_2008}. Many of these additions go beyond TIGER/Line's scope, including passageways between buildings, footpaths through parks, bike routes, and detailed feature attributes such as finer-grained street classifiers, speed limits, etc.
+This study uses OSMnx to download, construct, correct, analyze, and visualize street networks at metropolitan, municipal, and neighborhood scales. OSMnx is a Python-based research tool that easily downloads OpenStreetMap data for any place name, address, or polygon in the world, then constructs it into a spatially-embedded graph-theoretic object for analysis and visualization \cite{redacted_osmnx:_2017}. OpenStreetMap is a collaborative worldwide mapping project that makes its spatial data available via various APIs \cite{corcoran_analysing_2013, jokar_arsanjani_openstreetmap_2015}. These data are of high quality and compare favorably to CIA World Factbook estimates and US Census TIGER/Line data \cite{haklay_how_2010, over_generating_2010, zielstra_comparative_2011, maron_how_2015, wu_improving_2005, frizzelle_importance_2009}. In 2007, OpenStreetMap imported the TIGER/Line roads (2005 vintage) and since then, many community-led corrections and improvements have been made \cite{willis_openstreetmap_2008}. Many of these additions go beyond TIGER/Line's scope, including passageways between buildings, footpaths through parks, bike routes, and detailed feature attributes such as finer-grained street classifiers, speed limits, etc.
 
-To define the study sites and their spatial boundaries, this study uses three sets of geometries. The first defines the metropolitan-scale study sites using the 2016 TIGER/Line shapefile of US census bureau urban areas. Each census-defined urban areas comprises a set of tracts that meet a minimum density threshold \cite{u.s._census_bureau_2010_2010}. We retain only the \emph{urbanized areas} subset of these data (i.e., areas with greater than 50,000 population), discarding the small \emph{urban clusters} subset. The second set of geometries defines our municipal-scale study sites using 51 separate TIGER/Line shapefiles (again, 2016) of US census bureau \emph{places} within all 50 states plus DC. We discard the subset of \emph{census-designated places} (i.e., small unincorporated communities) in these data, while retaining every US city and town. The third set of geometries defines the neighborhood-scale study sites using 42 separate shapefiles from Zillow, a real estate database company. These shapefiles contain neighborhood boundaries for major cities in 41 states plus DC. This fairly new data set comprises nearly 7,000 neighborhoods, but as \citet{schernthanner_spatial_2016} point out, Zillow does not publish the methodology used to construct these boundaries. However, despite its newness it already has a track record in the academic literature: \citet{besbris_effect_2015} use Zillow boundaries to examine neighborhood stigma and \citet{albrecht_indicator_2014} use them to study neighborhood-level poverty in New York.
+To define the study sites and their spatial boundaries, we use three sets of geometries. The first defines the metropolitan-scale study sites using the 2016 TIGER/Line shapefile of US census bureau urban areas. Each census-defined urban area comprises a set of tracts that meet a minimum density threshold \cite{u.s._census_bureau_2010_2010}. We retain only the \emph{urbanized areas} subset of these data (i.e., areas with greater than 50,000 population), discarding the small \emph{urban clusters} subset. The second set of geometries defines our municipal-scale study sites using 51 separate TIGER/Line shapefiles (again, 2016) of US census bureau \emph{places} within all 50 states plus DC. We discard the subset of \emph{census-designated places} (i.e., small unincorporated communities) in these data, while retaining every US city and town. The third set of geometries defines the neighborhood-scale study sites using 42 separate shapefiles from Zillow, a real estate database company. These shapefiles contain neighborhood boundaries for major cities in 41 states plus DC. This fairly new data set comprises nearly 7,000 neighborhoods, but as \citet{schernthanner_spatial_2016} point out, Zillow does not publish the methodology used to construct these boundaries. However, despite its newness it already has a track record in the academic literature: \citet{besbris_effect_2015} use Zillow boundaries to examine neighborhood stigma and \citet{albrecht_indicator_2014} use them to study neighborhood-level poverty in New York.
 
-For each of these geometries, we use OSMnx to download the (drivable, public) street network it contains, a process described in detail in \cite{boeing_osmnx:_2017} and summarized here. First OSMnx buffers each geometry by 0.5 km, then downloads the OpenStreetMap \enquote{nodes} and \enquote{ways} within this buffer. Next it constructs a street network from these data, corrects the topology, calculates street counts per node, then truncates the network to the original, desired polygon (ensuring that intersections are not considered dead-ends simply because an incident edge connects to a node outside the desired polygon). OSMnx saves each of these networks to disk as GraphML and shapefiles. Finally, it calculates metric and topological measures for each network, described below. Such measures extend the toolkit commonly used in urban form studies \cite{talen_measuring_2003, ewing_travel_2010}.
+For each of these geometries, we use OSMnx to download the (drivable, public) street network within it, a process described in detail in \cite{redacted_osmnx:_2017} and summarized here. First OSMnx buffers each geometry by 0.5 km, then downloads the OpenStreetMap \enquote{nodes} and \enquote{ways} within this buffer. Next it constructs a street network from these data, corrects the topology, calculates street counts per node, then truncates the network to the original, desired polygon. OSMnx saves each of these networks to disk as GraphML and shapefiles. Finally, it calculates metric and topological measures for each network, summarized below. Such measures extend the toolkit commonly used in urban form studies \cite{talen_measuring_2003, ewing_travel_2010}.
 
 \subsection{Street Network Measures}
 
-Brief descriptions of these OSMnx-calculated measures are discussed here, but extended technical definitions and algorithms can be found in e.g. \cite{trudeau_introduction_1994, albert_statistical_2002, dorogovtsev_evolution_2002, brandes_network_2005, costa_characterization_2007, newman_structure_2003, newman_networks:_2010, barthelemy_spatial_2011, cranmer_navigating_2017}. \emph{Average street length}, the mean edge length in the undirected representation of the graph, serves as a linear proxy for block size and indicates how fine-grained or coarse-grained the network is. \emph{Node density} is the number of nodes divided by the area covered by the network. \emph{Intersection density} is the density of the set of nodes with more than one street emanating from them (thus excluding dead-ends). \emph{Edge density} is the sum of all edge lengths divided by area, and the physical \emph{street density} is the sum of all edges in the undirected representation of the graph divided by area. These density measures all provide further indication of how fine-grained the network is. Finally, \emph{average circuity} represents the average ratio between an edge length and the straight-line distance between the two nodes it links.
+Brief descriptions of these OSMnx-calculated measures are discussed here, but extended technical definitions and algorithms can be found in e.g. \cite{trudeau_introduction_1994, albert_statistical_2002, dorogovtsev_evolution_2002, brandes_network_2005, costa_characterization_2007, newman_structure_2003, newman_networks:_2010, barthelemy_spatial_2011, cranmer_navigating_2017}. \emph{Average street length}, the mean edge length in the undirected representation of the graph, serves as a linear proxy for block size and indicates how fine-grained or coarse-grained the network is. \emph{Node density} is the number of nodes divided by the area covered by the network. \emph{Intersection density} is the density of the set of nodes with more than one street emanating from them (thus excluding dead-ends). \emph{Edge density} is the sum of all edge lengths divided by area, and the physical \emph{street density} is the sum of all edges in the undirected representation of the graph divided by area. These density measures suggest how fine-grained the network is. Finally, \emph{average circuity} represents the average ratio between each edge length and the straight-line distance between the two nodes it links.
 
-The \emph{average node degree}, or mean number of edges incident to each node, quantifies how well the nodes are connected on average. Similarly, but more concretely, the \emph{average streets per node} measures the mean number of physical streets (i.e., edges in the undirected representation of the graph) that emanate from each intersection and dead-end. This adapts the average node degree for physical form rather than directed flow. The statistical and spatial distributions of number of streets per node characterize the type, prevalence, and dispersion of intersection connectedness in the network. \emph{Connectivity} measures the minimum number of nodes or edges that must be removed from a connected graph to disconnect it. The \emph{average node connectivity} (ANC) of a network---the mean number of internally node-disjoint paths between each pair of nodes in the graph---represents the expected number of nodes that must be removed to disconnect a randomly selected pair of non-adjacent nodes \cite{beineke_average_2002,dankelmann_bounds_2003}. 
+The \emph{average node degree}, or mean number of edges incident to each node, quantifies how well the nodes are connected. Similarly, but more concretely, the \emph{average streets per node} measures the mean number of physical streets (i.e., edges in the undirected representation of the graph) that emanate from each intersection and dead-end. This adapts the average node degree for physical form rather than directed flow. The statistical and spatial distributions of number of streets per node characterize the type, prevalence, and dispersion of intersection connectedness in the network. \emph{Connectivity} measures the minimum number of nodes or edges that must be removed from a connected network to disconnect it. The \emph{average node connectivity} (ANC) of a network---the mean number of internally node-disjoint paths between each pair of nodes---represents the expected number of nodes that must be removed to disconnect a randomly selected pair of non-adjacent nodes \cite{beineke_average_2002,dankelmann_bounds_2003}. 
 
-The \emph{clustering coefficient} of a node is the ratio of the number of edges between its neighbors to the maximum possible number of edges that could exist between these neighbors \cite{jiang_topological_2004, opsahl_clustering_2009}. The weighted clustering coefficient weights this ratio by edge length and the average clustering coefficient is the mean of the clustering coefficients of all the nodes in the network. Centrality indicates the importance of nodes in a network \cite{huang_trajgraph:_2016, zhong_revealing_2017}. \emph{Betweenness centrality} evaluates the number of shortest paths that pass through each node \cite{barthelemy_betweenness_2004}. The maximum betweenness centrality (MBC) in a network specifies the proportion of shortest paths that pass through the most important node. This is an indicator of resilience: networks with a high MBC are more prone to failure or inefficiency should this single choke point fail. Finally, \emph{PageRank} ranks nodes based on the structure of incoming links and the rank of the source node \cite{brin_anatomy_1998, jiang_predicting_2008, agryzkov_algorithm_2012, chin_geographically_2015, gleich_pagerank_2015}.
+The \emph{clustering coefficient} of a node is the ratio of the number of edges between its neighbors to the maximum possible number of edges that could exist between these neighbors \cite{jiang_topological_2004, opsahl_clustering_2009}. The weighted clustering coefficient weights this ratio by edge length and the average clustering coefficient is the mean of the clustering coefficients of all the network's nodes. \emph{Betweenness centrality} indicates the importance of nodes in a network by evaluating the number of shortest paths that pass through each node \cite{barthelemy_betweenness_2004,huang_trajgraph:_2016, zhong_revealing_2017}. The maximum betweenness centrality (MBC) in a network specifies the proportion of shortest paths that pass through the most important node. This is an indicator of resilience: networks with a high MBC are more prone to failure or inefficiency should this single choke point fail. Finally, \emph{PageRank} ranks nodes based on the structure of incoming links and the rank of the source node \cite{brin_anatomy_1998, jiang_predicting_2008, agryzkov_algorithm_2012, chin_geographically_2015, gleich_pagerank_2015}.
 
 In total, this study cross-sectionally analyzes 27,009 networks: 497 urbanized areas' street networks, 19,655 cities' and towns' street networks, and 6,857 neighborhoods' street networks. These sample sizes are larger than those of any previous similar study. The following section presents the findings of these analyses at metropolitan, municipal, and neighborhood scales.
 
@@ -71,15 +77,9 @@ In total, this study cross-sectionally analyzes 27,009 networks: 497 urbanized a
 
 Table \ref{table01} presents summary statistics for the entire data set of 497 urbanized areas. These urbanized areas span a wide range of sizes, from the Delano, CA Urbanized Area's 26 km\textsuperscript{2} to the New York--Newark, NY--NJ--CT Urbanized Area's 8,937 km\textsuperscript{2}---thus, density and count-based measures demonstrate substantial variance. Further, these urbanized areas span a wide spectrum of terrains, development eras and paradigms, and cultures.
 
-\begin{figure}
-\includegraphics[width=1\textwidth]{media/fig01.png}
-\caption{Intersection density per urbanized area (left) and average streets per node per urbanized area (right) from lowest (pale yellow) to highest (dark red), in the contiguous US}
-\label{fig01}
-\end{figure}
+Nevertheless, looking across the data set provides a sense of the breadth of American metropolitan street networks. New York's urbanized area---America's largest-–-has 373,309 intersections and 79 million meters of linear street (or 417,570 and 83.4 million if including service roads). Delano, CA's urbanized area---America's smallest---has 874 intersections and 222,328 meters of linear street (or 964 and 231,000 meters if including service roads). The typical American urbanized area is approximately 185 km\textsuperscript{2} in land area, has 5,830 intersections, and 1.3 million linear meters of street. Its street network is about 7.4\% more circuitous than straight-line as-the-crow-flies edges between nodes would be. The most circuitous network is 14\% more circuitous than straight-line would be, and the least is only 2\%. Looking at density, grain, and connectivity in the typical urbanized area, the average street segment length (a proxy for block size) is 160 meters. The longest average street segment is the 226-meter average of urbanized Danbury, CT. Puerto Rican cities hold the top four positions for shortest average street segment length, but among the 50 states plus DC, the shortest average street segment is the 125.3-meter average of urbanized Tracy, CA, indicating a fine-grained street network. The urbanized area of Portland, Oregon, with its famously compact walkable blocks, ranks second at 125.5 meters.
 
-Nevertheless, looking across the data set provides a sense of the breadth of American metropolitan street networks. New York's urbanized area---America's largest-–-has 373,309 intersections and 79 million meters of linear street (or 417,570 and 83.4 million if including service roads). Delano, CA's urbanized area---America's smallest---has 874 intersections and 222,328 meters of linear street (or 964 and 231,000 meters if including service roads). The typical American urbanized area is approximately 185 km\textsuperscript{2} in land area, has 5,830 intersections, and 1.3 million linear meters of street. Its street network is about 7.4\% more circuitous than straight-line as-the-crow-flies edges between nodes would be. The most circuitous network is 14\% more circuitous than straight-line would be, and least is only 2\%. Looking density, grain, and connectivity in the typical urbanized area, the average street segment length (a proxy for block size) is 160 meters. The longest average street segment is the 226-meter average of urbanized Danbury, CT. Puerto Rican cities hold the top four positions for shortest average street segment length, but among the 50 states plus DC, the shortest average street segment is the 125.3-meter average of urbanized Tracy, CA, indicating a much finer street network. The urbanized area of Portland, Oregon, with its famously compact walkable blocks, ranks second at 125.5 meters on average.
-
-\begin{table}
+\begin{table*}
 \centering
 \caption{Central tendency and statistical dispersion for selected measures of all US urbanized areas' street networks.}
 \label{table01}
@@ -116,17 +116,23 @@ Nevertheless, looking across the data set provides a sense of the breadth of Ame
 	Average streets per node                    & 2.764          & 0.162          & 2.223          & 2.77           & 3.217          \\
 	\bottomrule
 \end{tabular}
-\end{table}
-
-\begin{figure}
-\includegraphics[width=0.75\textwidth]{media/fig02.png}
-\caption{Distribution of node types in 9 urbanized areas, with number of streets emanating from the node on the $x$-axis and proportion of nodes of this type on the $y$-axis }
-\label{fig02}
-\end{figure}
+\end{table*}
 
 The typical urbanized area has 26 intersections per km\textsuperscript{2}. Both the densest and the sparsest are in the Deep South: the sparsest is 12.5 (Gainesville, GA urbanized area) and the densest is 49.4 (New Orleans urbanized area). However, New Orleans is an anomaly in the Deep South. Figure \ref{fig01} depicts the intersection density of each American urbanized area: the highest intersection densities concentrate west of the Mississippi River, while the lowest concentrate in a belt running from Louisiana, through the Carolinas and Appalachians, and into New England. In general, only the largest cities on the east coast (e.g., Boston, New York, Philadelphia, Washington) and Florida escape this trend.
 
-The distribution of node types (i.e., intersections and dead ends) provides an indicator of network connectedness. The typical urbanized area averages 2.8 streets per intersection: many 3-way intersections, fewer dead-ends, and even fewer 4-way intersections. The gridlike San Angelo, TX urbanized area has the most streets per node (3.2) on average, and (outside of Puerto Rico, which contains the seven lowest urbanized areas) the sprawling, disconnected Lexington Park, MD urbanized area has the fewest (2.2). These two urbanized areas fit the trend seen in the spatial distribution across the US in Figure \ref{fig01}: urbanized areas in the great plains and Midwest have particularly high numbers of streets per node on average, indicating more gridlike, connected networks. Cities in the southern and western US tend to have fewer streets per node, reflecting more dead-ends and a disconnected network. This finding is discussed in more detail in the upcoming section.
+\begin{figure*}
+	\includegraphics[width=1\textwidth]{fig01.png}
+	\caption{Intersection density per urbanized area (left) and average streets per node per urbanized area (right) from lowest (pale yellow) to highest (dark red), in the contiguous US}
+	\label{fig01}
+\end{figure*}
+
+\begin{figure*}
+	\includegraphics[width=0.7\textwidth]{fig02.png}
+	\caption{Distribution of node types in 9 urbanized areas, with number of streets emanating from the node on the $x$-axis and proportion of nodes of this type on the $y$-axis }
+	\label{fig02}
+\end{figure*}
+
+The distribution of node types (i.e., intersections and dead ends) provides an indicator of network connectedness. The typical urbanized area averages 2.8 streets per intersection: many 3-way intersections, fewer dead-ends, and even fewer 4-way intersections. The gridlike San Angelo, TX urbanized area has the most streets per node (3.2) on average, and (outside of Puerto Rico, which contains the seven lowest urbanized areas) the sprawling, disconnected Lexington Park, MD urbanized area has the fewest (2.2). These fit the trend seen in the spatial distribution across the US in Figure \ref{fig01}: urbanized areas in the Great Plains and Midwest have particularly high numbers of streets per node on average, indicating more gridlike, connected networks. Cities in the southern and western US tend to have fewer streets per node, reflecting more dead-ends and a disconnected network. This finding is discussed in more detail in the upcoming section.
 
 In the typical urbanized area, 18\% of nodes are 4-way intersections, 59\% are 3-way intersections, and 21\% are dead-ends. However, this distribution varies somewhat: examining a small sample of nine urbanized areas, chosen to maximize variance, reveals this in clearer detail. In Figure \ref{fig02}, urban Atlanta and Chattanooga have very high proportions of dead-ends---each over 30\% of all nodes---and very few 4-way intersections, indicating a disconnected street pattern. The urbanized areas of Phoenix, Boston, Detroit, and Chattanooga have particularly high proportions of 3-way intersections, each over 60\%, indicating a prevalence of T-intersections. Conversely, Chicago, New Orleans, Duluth, and Lubbock have high proportions of 4-way intersections, indicating more gridlike connected networks. But what is perhaps most notable about Figure \ref{fig02} is that these nine urbanized areas, despite being chosen to maximize variance, are overwhelmingly similar to each other. Every large American urban agglomeration is characterized by a preponderance of 3-way intersections.
 
@@ -134,7 +140,7 @@ The relationship between fine-grained networks and connectedness/gridness is not
 
 \newgeometry{margin=1in}
 \begin{landscape}
-\begin{table}
+\begin{table*}
 \centering
 \caption{Selected measures of the 30 largest (by land area) urbanized areas' street networks.}
 \label{table02}
@@ -174,7 +180,7 @@ Nashville            & 1460          & 1.08         & 0.03                      
 Milwaukee            & 1413          & 1.06         & 0.06                       & 0.14           & 0.55        & 0.3         & 28.27                 & 7.81                  & 157                   & 3.03 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 \end{landscape}
 \restoregeometry
 
@@ -190,7 +196,7 @@ These metropolitan analyses consider trends in the built form at the scale of br
 
 Table \ref{table03} presents summary statistics of street network characteristics across the entire data set of 19,655 cities and towns---every incorporated city and town in the US. Following recent work by \citet{barthelemy_modeling_2008} and \citet{strano_urban_2013}, we examine the relationship between the total street length $L$ and the number of nodes $n$. The former proposed a model of cities in which $L$ and $n$ scale nonlinearly as $n^{1/2}$, and the latter recently confirmed this empirically with a small sample of ten European cities. However, their small sample size may limit the generalizability of this finding. To investigate this empirically, we examine the relationship between $L$ and $n$ for 19,655 US cities and towns and instead find a strong \emph{linear} relationship ($r^{2}=0.98$), as depicted in Figure \ref{fig03}. We also find a similar linear relationship at the metropolitan and neighborhood scales.
 
-\begin{table}
+\begin{table*}
 \centering
 \caption{Selected summary stats for every incorporated city and town in the US.}
 \label{table03}
@@ -227,26 +233,26 @@ Table \ref{table03} presents summary statistics of street network characteristic
 	Average streets per node                    & 2.851   & 0.282   & 1              & 2.852          & 4         \\
 	\bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 Previous findings \citep[e.g.,][]{masucci_random_2009} also suggest street segment lengths in an urban network follow a power-law distribution. However, we find that these networks instead generally follow a lognormal distribution. This makes theoretical sense as most street networks are not truly scale-free: for example, a typical street network might comprise very few very long street segments (e.g., 1 km), more medium-length segments (e.g., 250 m), many short segments (e.g., 80 m), but very few very short segments (e.g., 10 m). This theoretical illustration suggests the lognormal distribution that this study generally finds across municipal US street networks. An exception, of course, lies in consistently-sized orthogonal grids filling a city's incorporated spatial extents. Such distributions are extremely peaked around a single value: the linear length of a grid block.
 
-We find that such cities are not uncommon in the US, particularly between the Mississippi River and the Rocky Mountains: the Great Plains states are characterized by a unique street network form that is both orthogonal and reasonably dense. The \emph{former} is partly the result of topography (flat terrain that allows idealized grids) and design history (rapid platting and development during the late nineteenth century) that favor orthogonal grids, as discussed earlier. The \emph{latter} results from the fact that most towns across the Great Plains exhibit minimal suburban sprawl. Thus, municipal boundaries snugly embrace the gridlike street network, without extending to accommodate a vast peripheral belt of twentieth century sprawl, circuity, and \enquote{loops and lollipops} \cite{southworth_streets_1997} that characterizes cities in California that were settled in the same era but later subjected to substantial suburbanization.
+We find that such cities are not uncommon in the US, particularly between the Mississippi River and the Rocky Mountains: the Great Plains states are characterized by a unique street network form that is both orthogonal and reasonably dense. The \emph{former} is partly the result of topography (flat terrain that allows idealized grids) and design history (rapid platting and development during the late nineteenth century) that favor orthogonal grids, as discussed earlier. The \emph{latter} results from the fact that most towns across the Great Plains exhibit minimal suburban sprawl. Thus, municipal boundaries snugly embrace the gridlike street network, without extending to accommodate a vast peripheral belt of twentieth century sprawl, circuity, and \enquote{loops and lollipops} \cite{southworth_streets_1997} that characterizes cities in e.g. California that were settled in the same era but later subjected to substantial suburbanization.
 
-\begin{figure}
-	\includegraphics[width=0.7\textwidth]{media/fig03.png}
+\begin{figure*}
+	\includegraphics[width=0.7\textwidth]{fig03.png}
 	\caption{The linear relationship between total street length and number of nodes in the street networks of 6,857 US neighborhoods (left) and 19,655 US cities and towns (right).}
 	\label{fig03}
-\end{figure}
+\end{figure*}
 
-\begin{figure}
-	\includegraphics[width=0.85\textwidth]{media/fig04.png}
+\begin{figure*}
+	\includegraphics[width=0.85\textwidth]{fig04.png}
 	\caption{Left: contiguous US states by median of mean streets per node in municipal street networks, from lowest (pale yellow) to highest (dark red). Right: contiguous US states by median of mean street segment length in municipal street networks, from longest (pale yellow) to shortest (dark red).}
 	\label{fig04}
-\end{figure}
+\end{figure*}
 
 \newgeometry{margin=2cm}
-\begin{table}
+\begin{table*}
 \centering
 \caption{Median values, aggregated by state plus DC, of selected measures of the municipal-scale street networks for every city and town in the US.}
 \label{table04}
@@ -307,7 +313,7 @@ We find that such cities are not uncommon in the US, particularly between the Mi
 	WY    & 23.48                       & 2.92                 & 1.06         & 143.63                    \\
 	\bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 \restoregeometry
 
 For example, if we measure connectedness in terms of average number of streets per node at the city-scale and then aggregate these cities by state (Table \ref{table04}), we find Nebraska, Kansas, South Dakota, Montana, North Dakota, Oklahoma, and Iowa have, in order, the highest medians (Figure \ref{fig04}). This indicates the most gridlike networks. If we measure intersection density at the city-scale and then aggregate these cities by state, we find Rhode Island, Nebraska, New Jersey, Kansas, and Montana have, in order, the highest medians. We again see three Great Plains states near the top, alongside small densely populated East Coast states. Nebraska also has the smallest block sizes (measured via the proxy of average street segment length) while the largest concentrate in the Deep South, upper New England, and Utah (Figure \ref{fig04}).
@@ -320,7 +326,7 @@ However, municipal boundaries vary greatly in their extents around the built-up 
 
 We have thus far examined every urban street network in the US at the metropolitan and municipal scales. While the metropolitan scale captures the emergent character of the wider region's complex system, and the municipal scale captures planning decisions made by a single city government, the neighborhood best represents the scale of individual urban design interventions into the urban form. Further, this scale more commonly reflects individual designs, eras, and paradigms in street network development than the \enquote{many hands, many eras} evolution of form at larger scales.
 
-\begin{table}
+\begin{table*}
 \centering
 \caption{Selected summary stats for all the neighborhood-scale street networks.}
 \label{table05}
@@ -357,21 +363,21 @@ We have thus far examined every urban street network in the US at the metropolit
 	Average streets per node                    & 2.925   & 0.408   & 1              & 2.944          & 4.026    \\
 	\bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 Table \ref{table05} presents summary statistics for these 6,857 neighborhoods. Compared to the metropolitan and municipal scales, we see much greater variance here, as expected, given the smaller network sizes at the neighborhood scale. A few neighborhoods have no intersections within their Zillow-defined boundaries, resulting in a minimum intersection density of 0 across the data set. Meanwhile, the small neighborhood of Cottages North in Davis, California has the highest intersection density in the country, 444/km\textsuperscript{2}, largely an artifact of its small area as the denominator. Nationwide, the typical neighborhood averages 2.9 streets per intersection, reflecting the prevalence of 3-way intersections in the US, discussed earlier. The median proportions of each node type are 14.5\% for dead-ends, 57.4\% for 3-way intersections, and 23.4\% for 4-way intersections. The typical neighborhood averages 135-meter street segment lengths and 46.4 intersections per km\textsuperscript{2}.
 
-Due to the extreme values seen---resulting from the large variance in neighborhood size---we can filter the data set to examine only large neighborhoods (i.e., with area greater than the median value across the data set). In this filtered set, the five neighborhoods with the highest intersection density are all in central Philadelphia. Central neighborhoods are common at the top of this list, including Point Breeze, Philadelphia; Central Boston; Central City, New Orleans; Downtown Tampa; and Downtown Portland. The three neighborhoods with the lowest intersection density are on the outskirts of Anchorage, Alaska. In this filtered set, the greatest average numbers of streets per node tend to be in older neighborhoods with orthogonal grids, such as Virginia Park, Tampa; Outer Sunset, San Francisco; and New Orleans' French Quarter. The neighborhoods with the lowest tend to be sprawling and often hilly suburbs far from the urban core, such as Scholl Canyon in Glendale, California or Sonoma Ranch in San Antonio, Texas.
+Due to the extreme values seen---resulting from the large variance in neighborhood size---we can filter the data set to examine only large neighborhoods (i.e., with area greater than the median value across the data set). In this filtered set, the five neighborhoods with the highest intersection density are all in central Philadelphia. Central neighborhoods are common at the top of this list, including Point Breeze, Philadelphia; Central Boston; Central City, New Orleans; Downtown Tampa; and Downtown Portland. The three neighborhoods with the lowest intersection density are on the outskirts of Anchorage, Alaska. In the filtered set, the greatest average numbers of streets per node tend to be in older neighborhoods with orthogonal grids, such as Virginia Park, Tampa; Outer Sunset, San Francisco; and New Orleans' French Quarter. The neighborhoods with the lowest tend to be sprawling and often hilly suburbs far from the urban core, such as Scholl Canyon in Glendale, California or Sonoma Ranch in San Antonio, Texas.
 
-\begin{figure}
-	\includegraphics[width=1\textwidth]{media/fig05.png}
+\begin{figure*}
+	\includegraphics[width=1\textwidth]{fig05.png}
 	\caption{Square-mile comparisons of central cities and their suburbs. Left: top, downtown Philadelphia, PA; bottom, its suburb, King of Prussia. Middle: top, downtown Portland, OR; bottom, its suburb, Beaverton. Right: top, downtown San Francisco, CA; bottom, its suburb, Concord.}
 	\label{fig05}
-\end{figure}
+\end{figure*}
 
-To illustrate these morphologies, Figure \ref{fig05} compares one square mile of the centers of Philadelphia, Portland, and San Francisco with one square mile of each of their suburbs. The connectedness and density of the central cities is clear, as is the disconnectivity of their suburbs. In fact, the suburbs have more in common with one another---despite being hundreds or thousands of miles apart---than they do with their central city neighbors, suggesting that land use and an era's prevailing design paradigm is paramount to geographical localism and regional context. The top row of Figure \ref{fig05} represents an era of planning and development that preceded the automobile, while the bottom row reflects the exclusionary zoning and mid--late twentieth century era of automobility in residential suburb design---namely the \enquote{loops and lollipops} and the \enquote{lollipops on a stick} design patterns identified by \citet{southworth_streets_1997}.
+To illustrate these morphologies, Figure \ref{fig05} compares one square mile of the centers of Philadelphia, Portland, and San Francisco with one square mile of each of their suburbs. The connectedness and fine-grain of the central cities are clear, as are the disconnectivity and coarse-grain of their suburbs. In fact, the suburbs have more in common with one another---despite being hundreds or thousands of miles apart---than they do with their central city neighbors, suggesting that land use and an era's prevailing design paradigm is paramount to geographical localism and regional context. The top row of Figure \ref{fig05} represents an era of planning and development that preceded the automobile, while the bottom row reflects the exclusionary zoning and mid--late twentieth century era of automobility in residential suburb design---namely the \enquote{loops and lollipops} and the \enquote{lollipops on a stick} design patterns \cite{southworth_streets_1997}.
 
-Finally we briefly take a closer look at San Francisco, California's neighborhoods alone for a clear cross-sectional analysis with consistent geography to examine resilience through the MBC and ANC measures. Due to its highly connected orthogonal grid, the Outer Sunset neighborhood has the lowest MBC---only 9.6\% of all shortest paths pass through its most important node. By contrast, 36\% of Chinatown's shortest paths pass through its most important node, and in Twin Peaks it is 37\%. In Chinatown, this is the result of the small neighborhood comprising only a few streets and that these streets are one-way, forcing paths through very few routing options. In Twin Peaks, this is the result of hilly terrain and a disconnected network forcing paths through a small set of chokepoints that link separate subsections of the network. If a large number of shortest paths rely on a single node, the network is more prone to failure or inefficiency given a single point of failure.
+Finally we briefly take a closer look at San Francisco, California's neighborhoods alone for a clear cross-sectional analysis with consistent geography to examine resilience through the MBC and ANC measures. Due to its highly connected orthogonal grid, the Outer Sunset neighborhood has the lowest MBC---only 9.6\% of all shortest paths pass through its most important node. By contrast, 36\% of Chinatown's shortest paths pass through its most important node, and in Twin Peaks it is 37\%. In Chinatown, this is the result of the small neighborhood comprising only a few streets---and that these streets are one-way, forcing paths through very few routing options. In Twin Peaks, this is the result of hilly terrain and a disconnected network forcing paths through a small set of chokepoints that link separate subsections of the network. If a large number of shortest paths rely on a single node, the network is more prone to failure or inefficiency given a single point of failure.
 
 ANC is another indicator of resilience. In San Francisco, Twin Peaks' network has the lowest ANC: on average only 1.05 nodes must be removed to disconnect a randomly selected pair of nodes. Outer Sunset has the highest ANC: 3.2. These concur with the above descriptions of these networks. However, some central San Francisco orthogonal grid networks with many 4-way intersections---such as Downtown, Chinatown, and the Financial District---have surprisingly low ANCs: 1.5, 1.3, and 1.6 respectively. These neighborhoods comprise primarily one-way streets. Although they have dense, highly connected networks, they can be easily disconnected given that traffic cannot flow bidirectionally. These three neighborhoods also exhibit the greatest increase in ANC if all their edges are made undirected: Chinatown's increases 87\%, Downtown's 80\%, and the Financial District's 75\%. By contrast, Outer Sunset's street network sees only a 6\% increase due to it already comprising primarily bidirectional streets. Targeted conversion of one-way streets in networks like Downtown, the Financial District, and Chinatown may yield substantial resilience gains.
 
@@ -393,10 +399,453 @@ Future research should incorporate temporal analyses that goes beyond the presen
 
 \section{Conclusion}
 
-This paper had three primary purposes. First, it examined urban morphology through metric and topological measures of these networks---particularly focusing on density, connectedness, and resilience. Second, these methods and findings demonstrate the use of OSMnx as a new street network research toolkit. They suggest to urban planners and scholars new methods for acquiring and analyzing street network data. Third, it investigated claims about the distribution of street segment lengths and the relationship between the total street length and the number of nodes in a network. This study has made all of these network datasets---for 497 urbanized areas, 19,655 cities and towns, and 6,857 neighborhoods---along with all of their attribute data and morphological measures available in an online public repository for other researchers to study and repurpose at [redacted for peer review].
+This paper had three primary purposes. First, it examined urban morphology through metric and topological measures of 27,009 US street networks---particularly focusing on density, connectedness, and resilience. Second, these methods and findings demonstrate the use of OSMnx as a new street network research toolkit, suggesting to urban planners and scholars new methods for acquiring and analyzing data. Third, it investigated claims about the distribution of street segment lengths and the relationship between the total street length and the number of nodes in a network. This study has made all of these network datasets---for 497 urbanized areas, 19,655 cities and towns, and 6,857 neighborhoods---along with all of their attribute data and morphological measures available in an online public repository for other researchers to study and repurpose at [redacted].
 
 
 
-\bibliography{references}
+\begin{thebibliography}{54}
+	\providecommand{\natexlab}[1]{#1}
+	\providecommand{\url}[1]{\texttt{#1}}
+	\expandafter\ifx\csname urlstyle\endcsname\relax
+	\providecommand{\doi}[1]{doi: #1}\else
+	\providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+	
+	\bibitem[Agryzkov et~al.(2012)Agryzkov, Oliver, Tortosa, and
+	Vicent]{agryzkov_algorithm_2012}
+	T.~Agryzkov, J.~L. Oliver, L.~Tortosa, and J.~F. Vicent.
+	\newblock An algorithm for ranking the nodes of an urban network based on the
+	concept of {PageRank} vector.
+	\newblock \emph{Applied Mathematics and Computation}, 219\penalty0
+	(4):\penalty0 2186--2193, 2012.
+	\newblock ISSN 00963003.
+	\newblock \doi{10.1016/j.amc.2012.08.064}.
+	
+	\bibitem[Albert and Barabási(2002)]{albert_statistical_2002}
+	R.~Albert and A.-L. Barabási.
+	\newblock Statistical mechanics of complex networks.
+	\newblock \emph{Reviews of Modern Physics}, 74\penalty0 (1):\penalty0 47, 2002.
+	\newblock ISSN 0034-6861.
+	\newblock \doi{10.1103/RevModPhys.74.47}.
+	
+	\bibitem[Albrecht and Abramovitz(2014)]{albrecht_indicator_2014}
+	J.~Albrecht and M.~Abramovitz.
+	\newblock Indicator {Analysis} for {Unpacking} {Poverty} in {New} {York}
+	{City}.
+	\newblock Technical report, CUNY, New York, NY, 2014.
+	
+	\bibitem[Barthelemy(2004)]{barthelemy_betweenness_2004}
+	M.~Barthelemy.
+	\newblock Betweenness centrality in large complex networks.
+	\newblock \emph{The European Physical Journal B: Condensed Matter and Complex
+		Systems}, 38\penalty0 (2):\penalty0 163--168, 2004.
+	\newblock ISSN 1434-6028.
+	\newblock \doi{10.1140/epjb/e2004-00111-4}.
+	
+	\bibitem[Barthelemy(2011)]{barthelemy_spatial_2011}
+	M.~Barthelemy.
+	\newblock Spatial networks.
+	\newblock \emph{Physics Reports}, 499\penalty0 (1-3):\penalty0 1--101, 2011.
+	\newblock ISSN 03701573.
+	\newblock \doi{10.1016/j.physrep.2010.11.002}.
+	
+	\bibitem[Barthelemy and Flammini(2008)]{barthelemy_modeling_2008}
+	M.~Barthelemy and A.~Flammini.
+	\newblock Modeling {Urban} {Street} {Patterns}.
+	\newblock \emph{Physical Review Letters}, 100\penalty0 (13), 2008.
+	\newblock ISSN 0031-9007.
+	\newblock \doi{10.1103/PhysRevLett.100.138702}.
+	
+	\bibitem[Batty(2005)]{batty_network_2005}
+	M.~Batty.
+	\newblock Network geography: {Relations}, interactions, scaling and spatial
+	processes in {GIS}.
+	\newblock In D.~J. Unwin and P.~Fisher, editors, \emph{Re-presenting
+		{Geographical} {Information} {Systems}}, pages 149--170. John Wiley \& Sons,
+	Chichester, England, 2005.
+	
+	\bibitem[Beineke et~al.(2002)Beineke, Oellermann, and
+	Pippert]{beineke_average_2002}
+	L.~W. Beineke, O.~R. Oellermann, and R.~E. Pippert.
+	\newblock The {Average} {Connectivity} of a {Graph}.
+	\newblock \emph{Discrete Mathematics}, 252\penalty0 (1):\penalty0 31--45, 2002.
+	\newblock ISSN 0012-365X.
+	\newblock \doi{10.1016/S0012-365X(01)00180-7}.
+	
+	\bibitem[Besbris et~al.(2015)Besbris, Faber, Rich, and
+	Sharkey]{besbris_effect_2015}
+	M.~Besbris, J.~W. Faber, P.~Rich, and P.~Sharkey.
+	\newblock Effect of neighborhood stigma on economic transactions.
+	\newblock \emph{Proceedings of the National Academy of Sciences}, 112\penalty0
+	(16):\penalty0 4994--4998, 2015.
+	\newblock ISSN 0027-8424.
+	\newblock \doi{10.1073/pnas.1414139112}.
+	
+	\bibitem[Brandes and Erlebach(2005)]{brandes_network_2005}
+	U.~Brandes and T.~Erlebach, editors.
+	\newblock \emph{Network analysis: methodological foundations}.
+	\newblock Number 3418 in Lecture {Notes} in {Computer} {Science}. Springer,
+	Berlin, Germany, 2005.
+	\newblock ISBN 978-3-540-24979-5.
+	
+	\bibitem[Brin and Page(1998)]{brin_anatomy_1998}
+	S.~Brin and L.~Page.
+	\newblock The anatomy of a large-scale hypertextual web search engine.
+	\newblock \emph{Computer Networks and ISDN Systems: Proceedings of the Seventh
+		International World Wide Web Conference}, 30\penalty0 (1-7):\penalty0
+	107--117, 1998.
+	\newblock ISSN 1389-1286.
+	\newblock \doi{10.1016/S0169-7552(98)00110-X}.
+	
+	\bibitem[Buhl et~al.(2006)Buhl, Gautrais, Reeves, Solé, Valverde, Kuntz, and
+	Theraulaz]{buhl_topological_2006}
+	J.~Buhl, J.~Gautrais, N.~Reeves, R.~V. Solé, S.~Valverde, P.~Kuntz, and
+	G.~Theraulaz.
+	\newblock Topological patterns in street networks of self-organized urban
+	settlements.
+	\newblock \emph{The European Physical Journal B: Condensed Matter and Complex
+		Systems}, 49\penalty0 (4):\penalty0 513--522, 2006.
+	\newblock ISSN 1434-6028.
+	\newblock \doi{10.1140/epjb/e2006-00085-1}.
+	
+	\bibitem[Cardillo et~al.(2006)Cardillo, Scellato, Latora, and
+	Porta]{cardillo_structural_2006}
+	A.~Cardillo, S.~Scellato, V.~Latora, and S.~Porta.
+	\newblock Structural properties of planar graphs of urban street patterns.
+	\newblock \emph{Physical Review E}, 73\penalty0 (6), 2006.
+	\newblock ISSN 1539-3755.
+	\newblock \doi{10.1103/PhysRevE.73.066107}.
+	
+	\bibitem[Chin and Wen(2015)]{chin_geographically_2015}
+	W.-C.-B. Chin and T.-H. Wen.
+	\newblock Geographically {Modified} {PageRank} {Algorithms}: {Identifying} the
+	{Spatial} {Concentration} of {Human} {Movement} in a {Geospatial} {Network}.
+	\newblock \emph{PLoS ONE}, 10\penalty0 (10):\penalty0 e0139509, 2015.
+	\newblock ISSN 1932-6203.
+	\newblock \doi{10.1371/journal.pone.0139509}.
+	
+	\bibitem[Corcoran et~al.(2013)Corcoran, Mooney, and
+	Bertolotto]{corcoran_analysing_2013}
+	P.~Corcoran, P.~Mooney, and M.~Bertolotto.
+	\newblock Analysing the growth of {OpenStreetMap} networks.
+	\newblock \emph{Spatial Statistics}, 3:\penalty0 21--32, 2013.
+	\newblock ISSN 22116753.
+	\newblock \doi{10.1016/j.spasta.2013.01.002}.
+	
+	\bibitem[Costa et~al.(2007)Costa, Rodrigues, Travieso, and
+	Villas~Boas]{costa_characterization_2007}
+	L.~d.~F. Costa, F.~A. Rodrigues, G.~Travieso, and P.~R. Villas~Boas.
+	\newblock Characterization of complex networks: {A} survey of measurements.
+	\newblock \emph{Advances in Physics}, 56\penalty0 (1):\penalty0 167--242, 2007.
+	\newblock ISSN 0001-8732, 1460-6976.
+	\newblock \doi{10.1080/00018730601170527}.
+	
+	\bibitem[Cranmer et~al.(2017)Cranmer, Leifeld, McClurg, and
+	Rolfe]{cranmer_navigating_2017}
+	S.~J. Cranmer, P.~Leifeld, S.~D. McClurg, and M.~Rolfe.
+	\newblock Navigating the range of statistical tools for inferential network
+	analysis.
+	\newblock \emph{American Journal of Political Science}, 61\penalty0
+	(1):\penalty0 237--251, 2017.
+	\newblock \doi{10.1111/ajps.12263}.
+	
+	\bibitem[Crucitti et~al.(2006{\natexlab{a}})Crucitti, Latora, and
+	Porta]{crucitti_centrality_2006}
+	P.~Crucitti, V.~Latora, and S.~Porta.
+	\newblock Centrality measures in spatial networks of urban streets.
+	\newblock \emph{Physical Review E}, 73\penalty0 (3):\penalty0 036125,
+	2006{\natexlab{a}}.
+	\newblock ISSN 1539-3755.
+	\newblock \doi{10.1103/PhysRevE.73.036125}.
+	
+	\bibitem[Crucitti et~al.(2006{\natexlab{b}})Crucitti, Latora, and
+	Porta]{crucitti_centrality_2006-1}
+	P.~Crucitti, V.~Latora, and S.~Porta.
+	\newblock Centrality in networks of urban streets.
+	\newblock \emph{Chaos: An Interdisciplinary Journal of Nonlinear Science},
+	16\penalty0 (1):\penalty0 015113, 2006{\natexlab{b}}.
+	\newblock ISSN 10541500.
+	\newblock \doi{10.1063/1.2150162}.
+	
+	\bibitem[Dankelmann and Oellermann(2003)]{dankelmann_bounds_2003}
+	P.~Dankelmann and O.~R. Oellermann.
+	\newblock Bounds on the average connectivity of a graph.
+	\newblock \emph{Discrete Applied Mathematics}, 129\penalty0 (2):\penalty0
+	305--318, 2003.
+	\newblock ISSN 0166-218X.
+	\newblock \doi{10.1016/S0166-218X(02)00572-3}.
+	
+	\bibitem[Dorogovtsev and Mendes(2002)]{dorogovtsev_evolution_2002}
+	S.~Dorogovtsev and J.~Mendes.
+	\newblock Evolution of networks.
+	\newblock \emph{Advances in Physics}, 51\penalty0 (4):\penalty0 1079--1187,
+	2002.
+	\newblock \doi{10.1080 /0001873011011251}.
+	
+	\bibitem[Ewing and Cervero(2010)]{ewing_travel_2010}
+	R.~Ewing and R.~Cervero.
+	\newblock Travel and the {Built} {Environment}: {A} {Meta}-{Analysis}.
+	\newblock \emph{Journal of the American Planning Association}, 76\penalty0
+	(3):\penalty0 265--294, 2010.
+	\newblock ISSN 0194-4363.
+	\newblock \doi{10.1080/01944361003766766}.
+	
+	\bibitem[Frizzelle et~al.(2009)Frizzelle, Evenson, Rodriguez, and
+	Laraia]{frizzelle_importance_2009}
+	B.~Frizzelle, K.~Evenson, D.~Rodriguez, and B.~Laraia.
+	\newblock The importance of accurate road data for spatial applications in
+	public health: customizing a road network.
+	\newblock \emph{International Journal of Health Geographics}, 8\penalty0 (24),
+	2009.
+	\newblock ISSN 1476-072X.
+	\newblock \doi{10.1186/1476-072X-8-24}.
+	
+	\bibitem[Gleich(2015)]{gleich_pagerank_2015}
+	D.~F. Gleich.
+	\newblock {PageRank} {Beyond} the {Web}.
+	\newblock \emph{SIAM Review}, 57\penalty0 (3):\penalty0 321--363, 2015.
+	\newblock ISSN 0036-1445.
+	\newblock \doi{10.1137/140976649}.
+	
+	\bibitem[Haklay(2010)]{haklay_how_2010}
+	M.~Haklay.
+	\newblock How {Good} is {Volunteered} {Geographical} {Information}? {A}
+	{Comparative} {Study} of {OpenStreetMap} and {Ordnance} {Survey} {Datasets}.
+	\newblock \emph{Environment and Planning B: Planning and Design}, 37\penalty0
+	(4):\penalty0 682--703, 2010.
+	\newblock ISSN 1472-3417.
+	\newblock \doi{10.1068/b35097}.
+	
+	\bibitem[Huang et~al.(2016)Huang, Zhao, Ma, Yang, Ye, and
+	Zhang]{huang_trajgraph:_2016}
+	X.~Huang, Y.~Zhao, C.~Ma, J.~Yang, X.~Ye, and C.~Zhang.
+	\newblock {TrajGraph}: {A} {Graph}-{Based} {Visual} {Analytics} {Approach} to
+	{Studying} {Urban} {Network} {Centralities} {Using} {Taxi} {Trajectory}
+	{Data}.
+	\newblock \emph{IEEE Transactions on Visualization and Computer Graphics},
+	22\penalty0 (1):\penalty0 160--169, 2016.
+	\newblock ISSN 1077-2626.
+	\newblock \doi{10.1109/TVCG.2015.2467771}.
+	
+	\bibitem[Jiang(2008)]{jiang_predicting_2008}
+	B.~Jiang.
+	\newblock Predicting human movement using {PageRank} in an urban environment.
+	\newblock 2008.
+	
+	\bibitem[Jiang and Claramunt(2002)]{jiang_integration_2002}
+	B.~Jiang and C.~Claramunt.
+	\newblock Integration of space syntax into {GIS}: new perspectives for urban
+	morphology.
+	\newblock \emph{Transactions in GIS}, 6\penalty0 (3):\penalty0 295--309, 2002.
+	\newblock ISSN 1467-9671.
+	\newblock \doi{10.1111/1467-9671.00112}.
+	
+	\bibitem[Jiang and Claramunt(2004)]{jiang_topological_2004}
+	B.~Jiang and C.~Claramunt.
+	\newblock Topological {Analysis} of {Urban} {Street} {Networks}.
+	\newblock \emph{Environment and Planning B: Planning and Design}, 31\penalty0
+	(1):\penalty0 151--162, 2004.
+	\newblock ISSN 0265-8135.
+	\newblock \doi{10.1068/b306}.
+	
+	\bibitem[Jokar~Arsanjani et~al.(2015)Jokar~Arsanjani, Zipf, Mooney, and
+	Helbich]{jokar_arsanjani_openstreetmap_2015}
+	J.~Jokar~Arsanjani, A.~Zipf, P.~Mooney, and M.~Helbich, editors.
+	\newblock \emph{{OpenStreetMap} in {GIScience}}.
+	\newblock Lecture {Notes} in {Geoinformation} and {Cartography}. Springer
+	International, Cham, Switzerland, 2015.
+	\newblock ISBN 978-3-319-14279-1.
+	
+	\bibitem[Lee(1979)]{lee_kansas_1979}
+	L.~B. Lee.
+	\newblock \emph{Kansas and the {Homestead} act, 1862-1905}.
+	\newblock The management of public lands in the {United} {States}. Ayer Company
+	Publishers, North Stratford, NH, 1979.
+	\newblock ISBN 978-0-405-11341-3.
+	
+	\bibitem[Maron(2015)]{maron_how_2015}
+	M.~Maron.
+	\newblock How complete is {OpenStreetMap}?
+	\newblock \emph{Mapbox}, Nov. 2015.
+	\newblock URL \url{https://www.mapbox.com/blog/how-complete-is-openstreetmap/}.
+	
+	\bibitem[Masucci et~al.(2009)Masucci, Smith, Crooks, and
+	Batty]{masucci_random_2009}
+	A.~P. Masucci, D.~Smith, A.~Crooks, and M.~Batty.
+	\newblock Random planar graphs and the {London} street network.
+	\newblock \emph{The European Physical Journal B: Condensed Matter and Complex
+		Systems}, 71\penalty0 (2):\penalty0 259--271, 2009.
+	\newblock ISSN 1434-6028.
+	\newblock \doi{10.1140/epjb/e2009-00290-4}.
+	
+	\bibitem[Newman(2003)]{newman_structure_2003}
+	M.~E.~J. Newman.
+	\newblock The {Structure} and {Function} of {Complex} {Networks}.
+	\newblock \emph{SIAM Review}, 45\penalty0 (2):\penalty0 167--256, 2003.
+	\newblock ISSN 0036-1445.
+	\newblock \doi{10.1137/S003614450342480}.
+	
+	\bibitem[Newman(2010)]{newman_networks:_2010}
+	M.~E.~J. Newman.
+	\newblock \emph{Networks: {An} {Introduction}}.
+	\newblock Oxford University Press, Oxford, England, 2010.
+	\newblock ISBN 978-0-19-920665-0.
+	
+	\bibitem[Opsahl and Panzarasa(2009)]{opsahl_clustering_2009}
+	T.~Opsahl and P.~Panzarasa.
+	\newblock Clustering in weighted networks.
+	\newblock \emph{Social Networks}, 31\penalty0 (2):\penalty0 155--163, 2009.
+	\newblock ISSN 03788733.
+	\newblock \doi{10.1016/j.socnet.2009.02.002}.
+	
+	\bibitem[O'Sullivan(2014)]{fischer_spatial_2014}
+	D.~O'Sullivan.
+	\newblock Spatial {Network} {Analysis}.
+	\newblock In M.~M. Fischer and P.~Nijkamp, editors, \emph{Handbook of
+		{Regional} {Science}}, pages 1253--1273. Springer-Verlag, Berlin, Germany,
+	2014.
+	\newblock ISBN 978-3-642-23429-3.
+	
+	\bibitem[Over et~al.(2010)Over, Schilling, Neubauer, and
+	Zipf]{over_generating_2010}
+	M.~Over, A.~Schilling, S.~Neubauer, and A.~Zipf.
+	\newblock Generating web-based 3d {City} {Models} from {OpenStreetMap}: {The}
+	current situation in {Germany}.
+	\newblock \emph{Computers, Environment and Urban Systems}, 34\penalty0
+	(6):\penalty0 496--507, 2010.
+	\newblock ISSN 01989715.
+	\newblock \doi{10.1016/j.compenvurbsys.2010.05.001}.
+	
+	\bibitem[Porta et~al.(2006)Porta, Crucitti, and Latora]{porta_network_2006}
+	S.~Porta, P.~Crucitti, and V.~Latora.
+	\newblock The network analysis of urban streets: {A} dual approach.
+	\newblock \emph{Physica A: Statistical Mechanics and its Applications},
+	369\penalty0 (2):\penalty0 853--866, 2006.
+	\newblock ISSN 03784371.
+	\newblock \doi{10.1016/j.physa.2005.12.063}.
+	
+	\bibitem[Porterfield(2005)]{porterfield_homestead_2005}
+	J.~Porterfield.
+	\newblock \emph{The {Homestead} {Act} of 1862: {A} {Primary} {Source} {History}
+		of the {Settlement} of the {American} {Heartland} in the {Late} 19th
+		{Century}}.
+	\newblock Rosen Publishing Group, New York, NY, 1st edition, 2005.
+	\newblock ISBN 978-1-4042-0178-1.
+	
+	\bibitem[Ratti(2004)]{ratti_space_2004}
+	C.~Ratti.
+	\newblock Space syntax: some inconsistencies.
+	\newblock \emph{Environment and Planning B: Planning and Design}, 31\penalty0
+	(4):\penalty0 487--499, 2004.
+	\newblock ISSN 1472-3417.
+	\newblock \doi{10.1068/b3019}.
+	
+	\bibitem[Redacted(2017)]{redacted_osmnx:_2017}
+	R.~Redacted.
+	\newblock Title redacted.
+	\newblock \penalty0 (Redacted), 2017.
+	\newblock \doi{Redacted}.
+	
+	\bibitem[Schernthanner et~al.(2016)Schernthanner, Asche, Gonschorek, and
+	Scheele]{schernthanner_spatial_2016}
+	H.~Schernthanner, H.~Asche, J.~Gonschorek, and L.~Scheele.
+	\newblock Spatial {Modeling} and {Geovisualization} of {Rental} {Prices} for
+	{Real} {Estate} {Portals}.
+	\newblock In O.~Gervasi, B.~Murgante, S.~Misra, A.~M. A.~C. Rocha, C.~M. Torre,
+	D.~Taniar, B.~O. Apduhan, E.~Stankova, and S.~Wang, editors,
+	\emph{Computational {Science} and {Its} {Applications} - {ICCSA} 2016},
+	number 9788 in Lecture {Notes} in {Computer} {Science}, pages 120--133.
+	Springer International, Cham, Switzerland, 2016.
+	\newblock ISBN 978-3-319-42110-0.
+	\newblock DOI: 10.1007/978-3-319-42111-7\_11.
+	
+	\bibitem[Sherraden(2005)]{sherraden_inclusion_2005}
+	M.~Sherraden.
+	\newblock \emph{Inclusion in the {American} {Dream}: {Assets}, {Poverty}, and
+		{Public} {Policy}}.
+	\newblock Oxford University Press, Oxford, England, 2005.
+	\newblock ISBN 978-0-19-534709-8.
+	
+	\bibitem[Southworth and Ben-Joseph(1997)]{southworth_streets_1997}
+	M.~Southworth and E.~Ben-Joseph.
+	\newblock \emph{Streets and the {Shaping} of {Towns} and {Cities}}.
+	\newblock McGraw-Hill, New York, NY, 1997.
+	\newblock ISBN 978-1-55963-916-3.
+	
+	\bibitem[Strano et~al.(2013)Strano, Viana, da~Fontoura~Costa, Cardillo, Porta,
+	and Latora]{strano_urban_2013}
+	E.~Strano, M.~Viana, L.~da~Fontoura~Costa, A.~Cardillo, S.~Porta, and
+	V.~Latora.
+	\newblock Urban {Street} {Networks}, a {Comparative} {Analysis} of {Ten}
+	{European} {Cities}.
+	\newblock \emph{Environment and Planning B: Planning and Design}, 40\penalty0
+	(6):\penalty0 1071--1086, 2013.
+	\newblock ISSN 1472-3417.
+	\newblock \doi{10.1068/b38216}.
+	
+	\bibitem[Talen(2003)]{talen_measuring_2003}
+	E.~Talen.
+	\newblock Measuring {Urbanism}: {Issues} in {Smart} {Growth} {Research}.
+	\newblock \emph{Journal of Urban Design}, 8\penalty0 (3):\penalty0 195--215,
+	2003.
+	\newblock ISSN 1357-4809.
+	\newblock \doi{10.1080/1357480032000155141}.
+	
+	\bibitem[Trudeau(1994)]{trudeau_introduction_1994}
+	R.~J. Trudeau.
+	\newblock \emph{Introduction to {Graph} {Theory}}.
+	\newblock Dover Publications, New York, NY, 2nd edition, 1994.
+	\newblock ISBN 978-0-486-67870-2.
+	
+	\bibitem[{U.S. Census Bureau}(2010)]{u.s._census_bureau_2010_2010}
+	{U.S. Census Bureau}.
+	\newblock 2010 {Census} {Urban} and {Rural} {Classification} and {Urban} {Area}
+	{Criteria}, 2010.
+	\newblock URL
+	\url{https://www.census.gov/geo/reference/ua/urban-rural-2010.html}.
+	
+	\bibitem[Viana et~al.(2013)Viana, Strano, Bordin, and
+	Barthelemy]{viana_simplicity_2013}
+	M.~P. Viana, E.~Strano, P.~Bordin, and M.~Barthelemy.
+	\newblock The simplicity of planar networks.
+	\newblock \emph{Scientific Reports}, 3\penalty0 (3495):\penalty0 1--6, 2013.
+	\newblock ISSN 2045-2322.
+	\newblock \doi{10.1038/srep03495}.
+	
+	\bibitem[Willis(2008)]{willis_openstreetmap_2008}
+	N.~Willis.
+	\newblock {OpenStreetMap} project completes import of {United} {States} {TIGER}
+	data.
+	\newblock \emph{Linux.com}, Jan. 2008.
+	\newblock URL
+	\url{https://www.linux.com/news/openstreetmap-project-completes-import-united-states-tiger-data}.
+	
+	\bibitem[Wu et~al.(2005)Wu, Funk, Lurmann, and Winer]{wu_improving_2005}
+	J.~Wu, T.~H. Funk, F.~W. Lurmann, and A.~M. Winer.
+	\newblock Improving spatial accuracy of roadway networks and geocoded
+	addresses.
+	\newblock \emph{Transactions in GIS}, 9\penalty0 (4):\penalty0 585--601, 2005.
+	\newblock ISSN 1467-9671.
+	\newblock \doi{10.1111/j.1467-9671.2005.00236.x}.
+	
+	\bibitem[Zhong et~al.(2017)Zhong, Schläpfer, Arisona, Batty, Ratti, and
+	Schmitt]{zhong_revealing_2017}
+	C.~Zhong, M.~Schläpfer, S.~M. Arisona, M.~Batty, C.~Ratti, and G.~Schmitt.
+	\newblock Revealing centrality in the spatial structure of cities from human
+	activity patterns.
+	\newblock \emph{Urban Studies}, 54\penalty0 (2):\penalty0 437--455, 2017.
+	\newblock ISSN 0042-0980.
+	\newblock \doi{10.1177/0042098015601599}.
+	
+	\bibitem[Zielstra and Hochmair(2011)]{zielstra_comparative_2011}
+	D.~Zielstra and H.~Hochmair.
+	\newblock Comparative {Study} of {Pedestrian} {Accessibility} to {Transit}
+	{Stations} {Using} {Free} and {Proprietary} {Network} {Data}.
+	\newblock \emph{Transportation Research Record: Journal of the Transportation
+		Research Board}, 2217:\penalty0 145--152, 2011.
+	\newblock ISSN 0361-1981.
+	\newblock \doi{10.3141/2217-18}.
+	
+\end{thebibliography}
+
 
 \end{document}
