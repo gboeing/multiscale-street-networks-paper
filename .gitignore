@@ -1,6 +1,6 @@
 *.docx
 *.pdf
-arxiv
+arxiv-version
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
