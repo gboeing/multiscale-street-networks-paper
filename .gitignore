@@ -4,6 +4,7 @@ arxiv-version
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
+*.ent
 *.lof
 *.log
 *.lot
