@@ -1,5 +1,5 @@
 %-------------------------------------------------------------------------------------------
-% enter the author and paper information below:
+% enter the author and paper information:
 %-------------------------------------------------------------------------------------------
 \newcommand{\myname}{Geoff Boeing}
 \newcommand{\myemail}{gboeing@berkeley.edu}
@@ -15,53 +15,60 @@
 \RequirePackage[l2tabu,orthodox]{nag}
 \documentclass[11pt]{article}
 
-% import these packages first, in order
+% import encoding and font packages for pdflatex, in order
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{crimson}
+\usepackage{helvet}
+
+% import language and regionalization packages, in order
 \usepackage[strict,autostyle]{csquotes}
 \usepackage[USenglish]{babel}
+\usepackage{microtype}
 
 % import everything else
 \usepackage{authblk}
 \usepackage{booktabs}
-\usepackage{crimson}
-\usepackage{datetime}
 \usepackage[final]{draftwatermark}
 \usepackage{endnotes}
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{microtype}
 \usepackage{multicol}
 \usepackage{natbib}
 \usepackage{rotating}
 \usepackage{setspace}
+\usepackage{titlesec}
 \usepackage{url}
 
-% location of figure files
+% location of figure files, via graphicx package
 \graphicspath{{./figures/}}
 
-% configure the page layout
+% configure the page layout, via geometry package
 \geometry{
-	paper=letterpaper,         % paper size
-	top=3cm,                   % margin sizes
-	bottom=3cm,
-	left=2.5cm,
-	right=2.5cm}
-\setlength{\columnsep}{0.75cm} % space between text columns
+    paper=letterpaper,         % paper size
+    top=3cm,                   % margin sizes
+    bottom=3cm,
+    left=2.5cm,
+    right=2.5cm}
+\setlength{\columnsep}{0.75cm} % space between columns
 \setstretch{1.00}              % line spacing
 \clubpenalty=10000             % prevent orphans
 \widowpenalty=10000            % prevent widows
-\let\footnote=\endnote         % turn footnotes into endnotes
+
+% set section/subsection headings as the sans serif font
+\titleformat{\section}{\normalfont\sffamily\large\bfseries\color{black}}{\thesection.}{0.3em}{}
+\titleformat{\subsection}{\normalfont\sffamily\small\bfseries\color{black}}{\thesubsection.}{0.3em}{}
 
 % configure pdf metadata and link handling
 \hypersetup{
-	pdfauthor={\myname},
-	pdftitle={\papertitle},
-	pdfsubject={\papertitle},
-	pdfkeywords={\paperkeywords},
-	pdffitwindow=true,         % window fit to page when opened
-	breaklinks=true,           % break links that overflow horizontally
-	hidelinks=true             % remove link color and border
+    pdfauthor={\myname},
+    pdftitle={\papertitle},
+    pdfsubject={\papertitle},
+    pdfkeywords={\paperkeywords},
+    pdffitwindow=true,         % window fit to page when opened
+    breaklinks=true,           % break links that overflow horizontally
+    hidelinks=true             % remove link color and border
 }
 
 % configure watermark appearance
@@ -74,19 +81,20 @@
 %-------------------------------------------------------------------------------------------
 \begin{document}
 	
-	\title{\papertitle\footnote{Manuscript under review; see \url{http://geoffboeing.com/publications/multiscale-analysis-street-networks/}}}
-	\date{\paperdate}
-	\author[]{\myname \thanks{Email: \href{mailto:\myemail}{\myemail}}}
-	\affil[]{\myaffiliation}
-	
+\title{\papertitle\footnote{Manuscript under review; see \url{http://geoffboeing.com/publications/multiscale-analysis-street-networks/}}}
+\date{\paperdate}
+\author[]{\myname \thanks{Email: \href{mailto:\myemail}{\myemail}}}
+\affil[]{\myaffiliation}
+
 \maketitle
 
 \begin{abstract}
-OpenStreetMap offers an underexplored source of worldwide geospatial data useful to urban researchers. This study uses the OSMnx software to automatically download and analyze 27,000 US street networks from OpenStreetMap at metropolitan, municipal, and neighborhood scales---namely, every US city and town ($N=19655$), census urbanized area ($N=497$), and Zillow-defined neighborhood ($N=6857$). It presents wide-ranging empirical findings on US urban form and street network characteristics, emphasizing measures relevant to graph theory, urban design, and morphology such as structure, connectedness, density, centrality, and resilience. In the past, street network data acquisition and processing has been challenging and ad hoc. This study illustrates the use of OSMnx and OpenStreetMap to consistently conduct street network analysis with extremely large sample sizes, with clearly defined network definitions and extents for reproducibility, and using nonplanar, directed graphs. These street networks and measures data sets have been shared in a public repository for other researchers to use.
+OpenStreetMap offers an underexplored source of worldwide geospatial data useful to urban researchers. This study uses the OSMnx software to automatically download and analyze 27,000 US street networks from OpenStreetMap at metropolitan, municipal, and neighborhood scales---namely, every US city and town, census urbanized area, and Zillow-defined neighborhood. It presents empirical findings on US urban form and street network characteristics, emphasizing measures relevant to graph theory, transportation, urban design, and morphology such as structure, connectedness, density, centrality, and resilience. In the past, street network data acquisition and processing have been challenging and ad hoc. This study illustrates the use of OSMnx and OpenStreetMap to consistently conduct street network analysis with extremely large sample sizes, with clearly defined network definitions and extents for reproducibility, and using nonplanar, directed graphs. These street networks and measures data have been shared in a public repository for other researchers to use.
 \end{abstract}
 
 \vspace{0.25cm}
 
+% start two-column layout after the title and abstract
 \begin{multicols}{2}
 
 \section{Introduction}
@@ -95,7 +103,7 @@ On May 20, 1862, Abraham Lincoln signed the Homestead Act into law, making land 
 
 Network analysis is a natural approach to the study of cities as complex systems \citep{masucci_random_2009}. The empirical literature on street networks is growing ever richer, but suffers from some limitations---discussed in detail in \citep{boeing_osmnx:_2017} and summarized here. First, sample sizes tend to be fairly small due to data availability, gathering, and processing constraints: most studies in this literature that conduct topological or metric analyses tend to have sample sizes ranging around 10 to 50 networks \citep{buhl_topological_2006, cardillo_structural_2006, barthelemy_modeling_2008, strano_urban_2013}, which may limit the generalizability and interpretability of findings. Second, reproducibility has been difficult when the dozens of decisions that go into analysis---such as spatial extents, topological simplification and correction, definitions of nodes and edges, etc.---are ad hoc or only partly reported \citep[e.g.,][]{porta_network_2006, strano_urban_2013}. Third, and related to the first two, studies frequently oversimplify to planar or undirected primal graphs for tractability \citep[e.g.,][]{buhl_topological_2006, cardillo_structural_2006, barthelemy_modeling_2008, masucci_random_2009}, or use dual graphs despite the loss of geographic, metric information \citep{batty_network_2005, jiang_integration_2002, ratti_space_2004, crucitti_centrality_2006, crucitti_centrality_2006-1}. 
 
-This study addresses these limitations by conducting a morphological analysis of urban street networks at multiple scales, with large sample sizes, with clearly defined network definitions and extents for reproducibility, and using nonplanar, directed graphs. In particular, it examines 27,000 urban street networks---represented as primal, nonplanar, weighted multidigraphs with possible self-loops---at multiple overlapping scales across the US, focusing on structure, connectedness, centrality, and resilience. It examines the street networks of every incorporated city and town (population size $N=19655$), census urbanized area ($N=497$), and Zillow-defined neighborhood ($N=6857$) in the US. To do so, it uses OSMnx\footnote{OSMnx is freely available online at \url{https://github.com/gboeing/osmnx}}---a new street network research toolkit \citep{boeing_osmnx:_2017}---to download, construct, and analyze these street networks at metropolitan, municipal, and neighborhood scales. These street networks and measures data sets have been compiled and shared in a public repository at the Harvard Dataverse\footnote{\label{note_data_repo}Data repository available online at \url{https://dataverse.harvard.edu/dataverse/osmnx-street-networks}} for other researchers to repurpose.
+This study addresses these limitations by conducting a morphological analysis of urban street networks at multiple scales, with large sample sizes, with clearly defined network definitions and extents for reproducibility, and using nonplanar, directed graphs. In particular, it examines 27,000 urban street networks---represented as primal, nonplanar, weighted multidigraphs with possible self-loops---at multiple overlapping scales across the US, focusing on structure, connectedness, centrality, and resilience. It examines the street networks of every incorporated city and town (population size $N=19655$), census urbanized area ($N=497$), and Zillow-defined neighborhood ($N=6857$) in the US. To do so, it uses OSMnx\endnote{OSMnx is freely available online at \url{https://github.com/gboeing/osmnx}}---a new street network research toolkit \citep{boeing_osmnx:_2017}---to download, construct, and analyze these street networks at metropolitan, municipal, and neighborhood scales. These street networks and measures data sets have been compiled and shared in a public repository at the Harvard Dataverse\endnote{\label{note_data_repo}Data repository available online at \url{https://dataverse.harvard.edu/dataverse/osmnx-street-networks}} for other researchers to repurpose.
 
 The purpose of this paper is threefold. First, it describes and demonstrates a new methodology for easily and consistently acquiring, constructing, and analyzing large samples of street networks as nonplanar directed graphs. Second, it presents empirical findings of descriptive urban morphology for the street networks of every US city, urbanized area, and Zillow neighborhood. Third, it investigates with large sample sizes some claims previously made in the research literature using small sample sizes. This paper is organized as follows. In the next section, it discusses the data sources, tools, and methods used to collect, construct, and analyze these street networks. Then it presents findings of the analyses at metropolitan, municipal, and neighborhood scales. Finally, it concludes with a discussion of these findings and their implications for street network analysis, urban morphology, and city planning.
 
@@ -200,8 +208,8 @@ Among these urbanized areas, Milwaukee has the least circuitous network (6\% mor
 
 These metropolitan analyses consider trends in the built form at the scale of broad self-organized human systems and urbanized regions. However, they aggregate multiple heterogeneous municipalities and neighborhoods---the scales of human life, urban design projects, and planning jurisdiction---into single units of analysis. To disaggregate and analyze finer characteristics, the following subsections examine municipal- and neighborhood-scale street networks.
 
+% switch back to one-column layout to rotate this wide table sideways
 \end{multicols}
-
 \begin{sidewaystable*}[p]
 \centering
 \caption{Selected measures of the 30 largest (by land area) urbanized areas' street networks.}
@@ -245,6 +253,7 @@ These metropolitan analyses consider trends in the built form at the scale of br
 \end{tabular}
 \end{sidewaystable*}
 
+% done with wide rotated table, switch back to two columns
 \begin{multicols}{2}
 
 
